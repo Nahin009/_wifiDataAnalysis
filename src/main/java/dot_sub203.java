@@ -1,8 +1,8 @@
 import java.util.List;
 
-public class dot_sub {
+public class dot_sub203 {
 
-    private static final List<List<Integer>> refVectorList = List.of(
+    private static final List<List<Integer>> refVectorList203 = List.of(
             List.of(-73, -71, -70, -64, -51, -61, -63, -69, -66, -61),
             List.of(-78, -68, -75, -70, -60, -59, -54, -66, -59, -53),
             List.of(-77, -67, -76, -71, -62, -66, -61, -72, -67, -57),
@@ -14,7 +14,7 @@ public class dot_sub {
             List.of(-75, -70, -79, -71, -59, -68, -61, -68, -57, -21)
     );
 
-    private static final List<List<Integer>> allVectorList = List.of(
+    private static final List<List<Integer>> allVectorList203 = List.of(
             List.of(-73, -71, -70, -64, -51, -61, -63, -69, -66, -61),
             List.of(-78, -68, -75, -70, -60, -59, -54, -66, -59, -53),
             List.of(-77, -67, -76, -71, -62, -66, -61, -72, -67, -57),
@@ -36,8 +36,8 @@ public class dot_sub {
 
     public static void main(String[] args) {
         double modulus = 0.0;
-        for (List<Integer> refVector : refVectorList) {
-            for (List<Integer> allVector : allVectorList) {
+        for (List<Integer> refVector : refVectorList203) {
+            for (List<Integer> allVector : allVectorList203) {
                 for (int k = 0; k < refVector.size(); k++) {
 //                    System.out.println(refVector.get(k) - allVector.get(k));
 //                    modulus += Math.pow(refVector.get(k) - allVector.get(k), 2);

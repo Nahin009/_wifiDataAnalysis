@@ -43,7 +43,7 @@ public class Main {
         }
 
         // Get average scanList for a roomPosNo and deviceModel
-        String roomPosNo = "CSE204_15";
+        String roomPosNo = "CSE204_14";
         String deviceModel = "RMX3363";
 //        String deviceModel = "SM-M127G";
         System.out.println("RoomPosNo: " + roomPosNo + " DeviceModel: " + deviceModel);

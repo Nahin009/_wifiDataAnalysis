@@ -15,7 +15,7 @@ public class file204 {
     public final static List<String> allPointList = List.of("CSE204_1", "CSE204_2", "CSE204_3", "CSE204_4",
             "CSE204_5", "CSE204_6", "CSE204_7", "CSE204_8", "CSE204_9",
             "CSE204_10", "CSE204_11", "CSE204_12", "CSE204_13",
-            "CSE204_14", "CSE204_15", "CSE204_16", "CSE204_17");
+            "CSE204_14", "CSE204_15", "CSE204_16", "CSE204_17", "CSE204_18");
 
     public final static List<String> deviceList = List.of("RMX3363", "SM-M127G");
     public final static List<String> deviceModel = List.of("Galaxy M124213", "Redmi Note 8 Pro");
