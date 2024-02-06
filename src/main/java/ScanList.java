@@ -43,15 +43,13 @@ public class ScanList {
     @JsonProperty("ScanList")
     private List<List<wifiNode>> scanList;
 
-    Map<String, Pair<Integer, Integer>> countWithAvgMap;
-
     List<String> SSIDList; //All Captured SSID
     
     Map<String, Integer> countMap; //All Captured SSID vs their count out of 18 (As more than one arrived SSID in a single scan is removed)
     
     Map<String, List<Integer>> sortedStrengthMap; //All Captured SSID vs their strength in ascending order
     
-    Map<String, Integer> avgStrengthMapAfterRemovingOutliers; //All Captured SSID vs their average strength after removing outliers
+    Map<String, Double> avgStrengthMapAfterRemovingOutliers; //All Captured SSID vs their average strength after removing outliers
     
     Map<String, Integer> standardDeviationMap;
 
@@ -65,21 +63,7 @@ public class ScanList {
         averageScanList = new ArrayList<>();
         selectedScanList = new ArrayList<>();
         selectedSSID = new ArrayList<>();
-        selectedSSID.add("DataLab@BUET");
-        selectedSSID.add("Hall of Fame");
-//        selectedSSID.add("CSE OFFICE");
-        selectedSSID.add("dlink");
-        selectedSSID.add("CSE-204");
-        selectedSSID.add("CSE-205");
-        selectedSSID.add("CSE-206");
-        selectedSSID.add("CSE-202");
-        selectedSSID.add("CSE-104");
-        selectedSSID.add("CSE-303");
-        selectedSSID.add("CSE-304");
 
-        selectedSSID.add("Redmi Note 8 Pro");
-        selectedSSID.add("Galaxy M124213");
-        countWithAvgMap = new HashMap<>();
     }
 
     public ScanList(String Datetime, String DeviceModel, List<List<wifiNode>> scanList) {
@@ -93,88 +77,10 @@ public class ScanList {
         return DateTime;
     }
 
-    public String getDeviceModel() {
-        return DeviceModel;
-    }
-
-    public List<List<wifiNode>> getScanList() {
-        return scanList;
-    }
-
-    public String getRoomPosNo() {
-        return roomPosNo;
-    }
-
-    public void setRoomPosNo(String roomPosNo) {
-        this.roomPosNo = roomPosNo;
-    }
-
     public void setDatetime(String Datetime) {
         this.DateTime = Datetime;
     }
 
-    public void setDeviceModel(String DeviceModel) {
-        this.DeviceModel = DeviceModel;
-    }
-
-    public void setScanList(List<List<wifiNode>> scanList) {
-        this.scanList = scanList;
-    }
-
-    public void addScanList(List<wifiNode> scanList) {
-        this.scanList.add(scanList);
-    }
-
-    public void addcountWithAvgMap() {
-        for(int i = 0; i<scanList.size(); i++){
-            int size = scanList.get(i).size();
-            for (int j = 0; j<size; j++){
-                if(scanList.get(i).get(j).getSSID().equals("")){
-                    scanList.get(i).remove(j);
-                    j--;
-                    size--;
-                    continue;
-                }
-                if(countWithAvgMap.containsKey(scanList.get(i).get(j).getSSID())){
-                    Pair<Integer, Integer> pair = countWithAvgMap.get(scanList.get(i).get(j).getSSID());
-                    pair.setFirst(pair.getFirst() + scanList.get(i).get(j).getStrength());
-                    pair.setSecond(pair.getSecond() + 1);
-                    countWithAvgMap.put(scanList.get(i).get(j).getSSID(), pair);
-                }
-                else{
-                    Pair<Integer, Integer> pair = new Pair<>(scanList.get(i).get(j).getStrength(), 1);
-                    countWithAvgMap.put(scanList.get(i).get(j).getSSID(), pair);
-                }
-            }
-        }
-    }
-
-    public List<wifiNode> getAverageScanList() {
-
-        addcountWithAvgMap();
-
-        for(Map.Entry<String, Pair<Integer, Integer>> entry : countWithAvgMap.entrySet()){
-            Pair<Integer, Integer> pair = entry.getValue();
-            if (pair.getSecond() >= THRESHHOLD)
-                averageScanList.add(new wifiNode(entry.getKey(), pair.getFirst()/pair.getSecond()));
-        }
-
-        return averageScanList;
-    }
-
-    public List<wifiNode> getSelectedScanList() {
-
-        addcountWithAvgMap();
-
-        for(Map.Entry<String, Pair<Integer, Integer>> entry : countWithAvgMap.entrySet()){
-            if(selectedSSID.contains(entry.getKey())){
-                Pair<Integer, Integer> pair = entry.getValue();
-                selectedScanList.add(new wifiNode(entry.getKey(), pair.getFirst()/pair.getSecond()));
-            }
-        }
-
-        return selectedScanList;
-    }
 
 
 
@@ -183,7 +89,7 @@ public class ScanList {
         for (List<wifiNode> wifiNodes : scanList) {
             int size = wifiNodes.size();
             for (int j = 0; j < size; j++) {
-                if (wifiNodes.get(j).getSSID().equals("")) {
+                if (wifiNodes.get(j).getSSID().isEmpty()) {
                     wifiNodes.remove(j);
                     j--;
                     size--;
@@ -274,7 +180,7 @@ public class ScanList {
         return sortedStrengthMap;
     }
     
-    public Map<String, Integer> getAvgStrengthMapAfterRemovingOutliers() {
+    public Map<String, Double> getAvgStrengthMapAfterRemovingOutliers() {
         RemoveUnknownSSIDs();
         removeDuplicateSSIDs();
         getSortedStrengthMap();
@@ -288,28 +194,28 @@ public class ScanList {
                 for (int i = 0; i < size; i++) {
                     sum += entry.getValue().get(i);
                 }
-                avgStrengthMapAfterRemovingOutliers.put(entry.getKey(), sum / size);
+                avgStrengthMapAfterRemovingOutliers.put(entry.getKey(), (double) (sum / size));
             }
             else if (size > 15) {
                 int sum = 0;
                 for (int i = 3; i < size - 3; i++) {
                     sum += entry.getValue().get(i);
                 }
-                avgStrengthMapAfterRemovingOutliers.put(entry.getKey(), sum / (size - 6));
+                avgStrengthMapAfterRemovingOutliers.put(entry.getKey(), (double) (sum / (size - 6)));
             }
             else if(size > 10) {
                 int sum = 0;
                 for (int i = 2; i < size - 2; i++) {
                     sum += entry.getValue().get(i);
                 }
-                avgStrengthMapAfterRemovingOutliers.put(entry.getKey(), sum / (size - 4));
+                avgStrengthMapAfterRemovingOutliers.put(entry.getKey(), (double) (sum / (size - 4)));
             }
             else {
                 int sum = 0;
                 for (int i = 1; i < size - 1; i++) {
                     sum += entry.getValue().get(i);
                 }
-                avgStrengthMapAfterRemovingOutliers.put(entry.getKey(), sum / (size - 2));
+                avgStrengthMapAfterRemovingOutliers.put(entry.getKey(), (double) (sum / (size - 2)));
             }
         }
 

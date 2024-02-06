@@ -1,45 +1,79 @@
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 class countMap {
     Map<String, Integer> countMap;
 }
 
-class avgStrengthMap {
-    Map<String, Integer> avgStrengthMap;
-}
 
 public class MakeRefSSIDs {
+    Map<String, Map<String, ScanList>> roomPosList;
     Map<String, countMap> AllPosCountMap;
-    Map<String, avgStrengthMap> AllPosAvgStrengthMap;
+    Map<String, AvgStrengthMap> AllPosAvgStrengthMapOfSelectedSSIDs;
+    Map<String, Integer> AllSSIDsCountMap;
 
     public MakeRefSSIDs() {
+        roomPosList = new HashMap<>();
         AllPosCountMap = new HashMap<>();
-        AllPosAvgStrengthMap = new HashMap<>();
+        AllPosAvgStrengthMapOfSelectedSSIDs = new HashMap<>();
+        AllSSIDsCountMap = new HashMap<>();
     }
 
-    public void addPosCountMap(String roomPosNo, countMap countMap) {
-        AllPosCountMap.put(roomPosNo, countMap);
+    public void setRoomPosList(Map<String, Map<String, ScanList>> roomPosList) {
+        this.roomPosList = roomPosList;
     }
 
-    public void addPosAvgStrengthMap(String roomPosNo, avgStrengthMap avgStrengthMap) {
-        AllPosAvgStrengthMap.put(roomPosNo, avgStrengthMap);
+    public Map<String, Integer> getAllSSIDsCountMap() {
+        for (Map.Entry<String, Map<String, ScanList>> roomPosNo : roomPosList.entrySet()) {
+            for (Map.Entry<String, ScanList> scanList : roomPosNo.getValue().entrySet()) {
+                List<String> SSIDs = scanList.getValue().getSSIDList();
+                for (String SSID : SSIDs) {
+                    if (AllSSIDsCountMap.containsKey(SSID)) {
+                        AllSSIDsCountMap.put(SSID, AllSSIDsCountMap.get(SSID) + 1);
+                    } else {
+                        AllSSIDsCountMap.put(SSID, 1);
+                    }
+                }
+            }
+        }
+
+        // sort the SSIDs by count in descending order
+
+        // Convert HashMap to List of Map.Entry
+        List<Map.Entry<String, Integer>> entryList = new ArrayList<>(AllSSIDsCountMap.entrySet());
+
+        // Sort the list based on values in descending order
+        entryList.sort((e1, e2) -> e2.getValue().compareTo(e1.getValue()));
+
+        // Create a new LinkedHashMap to store the sorted entries
+        Map<String, Integer> sortedMap = new LinkedHashMap<>();
+
+        // Iterate through the sorted list and put entries into the new LinkedHashMap
+        for (Map.Entry<String, Integer> entry : entryList) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+
+        return sortedMap;
     }
 
-    public Map<String, countMap> getAllPosCountMap() {
-        return AllPosCountMap;
+    public Map<String, AvgStrengthMap> getRefVectors(List<String> selectedSSIDList) {
+        for (Map.Entry<String, Map<String, ScanList>> roomPosNo : roomPosList.entrySet()) {
+            for (Map.Entry<String, ScanList> scanList : roomPosNo.getValue().entrySet()) {
+                AvgStrengthMap avgStrengthMap = new AvgStrengthMap(scanList.getValue().getAvgStrengthMapAfterRemovingOutliers());
+
+                AvgStrengthMap avgStrengthMapOfSelectedSSIDs = new AvgStrengthMap();
+                for (String SSID : selectedSSIDList) {
+                    if(avgStrengthMap.map.containsKey(SSID)) {
+                        avgStrengthMapOfSelectedSSIDs.map.put(SSID, avgStrengthMap.map.get(SSID));
+                    }
+                    else {
+                        avgStrengthMapOfSelectedSSIDs.map.put(SSID, -90.0);
+                    }
+                }
+                AllPosAvgStrengthMapOfSelectedSSIDs.put(roomPosNo.getKey(), avgStrengthMapOfSelectedSSIDs);
+            }
+        }
+        return AllPosAvgStrengthMapOfSelectedSSIDs;
     }
 
-    public Map<String, avgStrengthMap> getAllPosAvgStrengthMap() {
-        return AllPosAvgStrengthMap;
-    }
-
-    public countMap getPosCountMap(String roomPosNo) {
-        return AllPosCountMap.get(roomPosNo);
-    }
-
-    public avgStrengthMap getPosAvgStrengthMap(String roomPosNo) {
-        return AllPosAvgStrengthMap.get(roomPosNo);
-    }
 
 }
