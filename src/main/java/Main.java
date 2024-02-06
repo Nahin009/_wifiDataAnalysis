@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
-        String JsonFilePath = "src/main/204_2ndDay.json";
+        String JsonFilePath = "src/main/203_2ndDay.json";
 
         // Read JSON file and convert to Java object
         ObjectMapper mapper = new ObjectMapper();

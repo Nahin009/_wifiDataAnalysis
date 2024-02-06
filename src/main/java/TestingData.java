@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class TestingData {
-    private static final int K = 7;
+    private static final int K = 3;
 
 
     List<String> refPointsInside, refPointsOutside, testPointsInside, testPointsOutside;
