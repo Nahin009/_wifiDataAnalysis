@@ -1,19 +1,13 @@
 import java.util.*;
 
-class countMap {
-    Map<String, Integer> countMap;
-}
-
 
 public class MakeRefSSIDs {
     Map<String, Map<String, ScanList>> roomPosList;
-    Map<String, countMap> AllPosCountMap;
     Map<String, AvgStrengthMap> AllPosAvgStrengthMapOfSelectedSSIDs;
     Map<String, Integer> AllSSIDsCountMap;
 
     public MakeRefSSIDs() {
         roomPosList = new HashMap<>();
-        AllPosCountMap = new HashMap<>();
         AllPosAvgStrengthMapOfSelectedSSIDs = new HashMap<>();
         AllSSIDsCountMap = new HashMap<>();
     }

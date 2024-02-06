@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
-        String JsonFilePath = "src/main/203_2ndDay.json";
+        String JsonFilePath = "src/main/204_2ndDay.json";
 
         // Read JSON file and convert to Java object
         ObjectMapper mapper = new ObjectMapper();
@@ -24,7 +24,24 @@ public class Main {
         List<String> testPointsInside = new ArrayList<>();
         List<String> testPointsOutside = new ArrayList<>();
 
-        List<String> selectedSSID = List.of("Galaxy M124213", "CSE-204", "CSE-303", "Hall of Fame", "DataLab@BUET", "dlink");
+        List<String> selectedSSID = new ArrayList<>();
+
+        selectedSSID.add("Galaxy M124213"); //204 203
+        selectedSSID.add("CSE-204"); //204 203
+        selectedSSID.add("CSE-303"); //204 203
+        selectedSSID.add("CSE-304"); //204 203
+        selectedSSID.add("Hall of Fame"); //204 203
+        selectedSSID.add("DataLab@BUET"); //204 203
+        selectedSSID.add("CSE-206"); //204 203
+        selectedSSID.add("CSE-108"); //204
+        selectedSSID.add("CSE-404"); //204
+        selectedSSID.add("CSE-G04"); //204 203
+        selectedSSID.add("CSE-G07"); //204 203
+        selectedSSID.add("CSE-306"); //204 203
+        selectedSSID.add("CSE-G09"); //204
+        selectedSSID.add("dlink"); //204 203
+//        selectedSSID.add("CSE-401"); //203
+
 
         try {
             TypeReference<Map<String, Map<String, ScanList>>> typeReference = new TypeReference<>() {};
