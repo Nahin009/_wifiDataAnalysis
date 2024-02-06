@@ -33,14 +33,14 @@ public class Main {
         selectedSSID.add("Hall of Fame"); //204 203
         selectedSSID.add("DataLab@BUET"); //204 203
         selectedSSID.add("CSE-206"); //204 203
-        selectedSSID.add("CSE-108"); //204
-        selectedSSID.add("CSE-404"); //204
+//        selectedSSID.add("CSE-108"); //204
+//        selectedSSID.add("CSE-404"); //204
         selectedSSID.add("CSE-G04"); //204 203
         selectedSSID.add("CSE-G07"); //204 203
         selectedSSID.add("CSE-306"); //204 203
-        selectedSSID.add("CSE-G09"); //204
+//        selectedSSID.add("CSE-G09"); //204
         selectedSSID.add("dlink"); //204 203
-//        selectedSSID.add("CSE-401"); //203
+        selectedSSID.add("CSE-401"); //203
 
 
         try {

@@ -62,6 +62,7 @@ public class TestingData {
             Map<String, Integer> countMap = new HashMap<>();
             for (int i = 0; i < K; i++) {
                 String refPoint = distanceList.get(i).getKey();
+//                System.out.println(refPoint);
                 if (refPoint.endsWith("_i")) {
                     countMap.put("inside", countMap.getOrDefault("inside", 0) + 1);
                 } else {
