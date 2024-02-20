@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
-        String JsonFilePath = "src/main/203_2ndDay.json";
+        String JsonFilePath = "src/main/203_ALL.json";
 
         // Read JSON file and convert to Java object
         ObjectMapper mapper = new ObjectMapper();
@@ -88,8 +88,8 @@ public class Main {
 
 
             testingData = new TestingData(refPointsInside, refPointsOutside, testPointsInside, testPointsOutside, AllPosAvgStrengthMapOfSelectedSSIDs);
-            testingData.KNN_With_MajorityVoting();
-
+//            testingData.KNN_With_MajorityVoting();
+            testingData.KNN_With_CoOrdinate_Checking();
 
 
         } catch (IOException e) {
