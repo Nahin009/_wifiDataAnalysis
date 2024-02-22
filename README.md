@@ -8,5 +8,3 @@ The scanList contains 18 wifiNodeLists\
 Every wifiNodeList contains a list of captured wifiNodes\
 Each wifiNode has a SSID(String) and a strength(INTEGER) [ in negative. So, -40 is powerful strangth than -60 ]
 
-
-
