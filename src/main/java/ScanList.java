@@ -33,8 +33,6 @@ class Pair<A, B> {
 }
 
 public class ScanList {
-    private static final Integer THRESHHOLD = 5;
-    private String roomPosNo;
     @JsonIgnoreProperties(ignoreUnknown = true)
     @JsonProperty("DateTime")
     private String DateTime;
@@ -51,7 +49,7 @@ public class ScanList {
     
     Map<String, Double> avgStrengthMapAfterRemovingOutliers; //All Captured SSID vs their average strength after removing outliers
     
-    Map<String, Integer> standardDeviationMap;
+    Map<String, Double> standardDeviationMap;
 
     List<wifiNode> averageScanList;
     List<wifiNode> selectedScanList;
@@ -220,6 +218,47 @@ public class ScanList {
         }
 
         return avgStrengthMapAfterRemovingOutliers;
+    }
+
+    public Map<String, Double> getStandardDeviationListFromAvgStrengthMap() {
+        RemoveUnknownSSIDs();
+        removeDuplicateSSIDs();
+        getAvgStrengthMapAfterRemovingOutliers();
+
+        standardDeviationMap = new HashMap<>();
+        for (Map.Entry<String, List<Integer>> entry : sortedStrengthMap.entrySet()) {
+            int size = entry.getValue().size();
+            if(size  <= 5) {
+                double sum = 0;
+                for (int i = 0; i < size; i++) {
+                    sum += Math.pow(entry.getValue().get(i) - avgStrengthMapAfterRemovingOutliers.get(entry.getKey()), 2);
+                }
+                standardDeviationMap.put(entry.getKey(), (double) Math.sqrt(sum / size));
+            }
+            else if (size > 15) {
+                double sum = 0;
+                for (int i = 3; i < size - 3; i++) {
+                    sum += Math.pow(entry.getValue().get(i) - avgStrengthMapAfterRemovingOutliers.get(entry.getKey()), 2);
+                }
+                standardDeviationMap.put(entry.getKey(), (double) Math.sqrt(sum / (size - 6)));
+            }
+            else if(size > 10) {
+                double sum = 0;
+                for (int i = 2; i < size - 2; i++) {
+                    sum += Math.pow(entry.getValue().get(i) - avgStrengthMapAfterRemovingOutliers.get(entry.getKey()), 2);
+                }
+                standardDeviationMap.put(entry.getKey(), (double) Math.sqrt(sum / (size - 4)));
+            }
+            else {
+                double sum = 0;
+                for (int i = 1; i < size - 1; i++) {
+                    sum += Math.pow(entry.getValue().get(i) - avgStrengthMapAfterRemovingOutliers.get(entry.getKey()), 2);
+                }
+                standardDeviationMap.put(entry.getKey(), (double) Math.sqrt(sum / (size - 2)));
+            }
+        }
+        return standardDeviationMap;
+
     }
 
 

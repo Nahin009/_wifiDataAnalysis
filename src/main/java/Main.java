@@ -88,8 +88,8 @@ public class Main {
 
 
             testingData = new TestingData(refPointsInside, refPointsOutside, testPointsInside, testPointsOutside, AllPosAvgStrengthMapOfSelectedSSIDs);
-//            testingData.KNN_With_MajorityVoting();
-            testingData.KNN_With_CoOrdinate_Checking();
+            testingData.KNN_With_MajorityVoting();
+//            testingData.KNN_With_CoOrdinate_Checking();
 
 
         } catch (IOException e) {

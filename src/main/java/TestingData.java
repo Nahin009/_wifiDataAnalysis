@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class TestingData {
-    private static final int K = 7;
+    private static final int K = 11;
 
 
     List<String> refPointsInside, refPointsOutside, testPointsInside, testPointsOutside;
@@ -36,7 +36,7 @@ public class TestingData {
         }
 
         coordinates = new Coordinates();
-        posGridMapping = coordinates.getPosGridMapping();
+        posGridMapping = coordinates.getposGridMapping();
         boundaryPoints = coordinates.getBoundaryPoints();
     }
 
@@ -92,7 +92,9 @@ public class TestingData {
     private Double CosineSimilarity(AvgStrengthMap refPoint, AvgStrengthMap testPoint) {
         double dotProduct = DotProduct(refPoint, testPoint);
         double refPointMagnitude = DotProduct(refPoint, refPoint);
+        refPointMagnitude = Math.sqrt(refPointMagnitude);
         double testPointMagnitude = DotProduct(testPoint, testPoint);
+        testPointMagnitude = Math.sqrt(testPointMagnitude);
         return dotProduct / (refPointMagnitude * testPointMagnitude);
     }
 
@@ -217,7 +219,7 @@ public class TestingData {
         for (Map.Entry<String, AvgStrengthMap> testPoint : testPoints.entrySet()) {
             Map<String, Double> distanceMap = new HashMap<>();
             for (Map.Entry<String, AvgStrengthMap> refPoint : refPoints.entrySet()) {
-                distanceMap.put(refPoint.getKey(), ManhattanDistance(refPoint.getValue(), testPoint.getValue()));
+                distanceMap.put(refPoint.getKey(), CosineSimilarity(refPoint.getValue(), testPoint.getValue()));
             }
             List<Map.Entry<String, Double>> distanceList = new ArrayList<>(distanceMap.entrySet());
             distanceList.sort(Map.Entry.comparingByValue());
@@ -263,7 +265,7 @@ public class TestingData {
         for (Map.Entry<String, AvgStrengthMap> testPoint : testPoints.entrySet()) {
             Map<String, Double> distanceMap = new HashMap<>();
             for (Map.Entry<String, AvgStrengthMap> refPoint : refPoints.entrySet()) {
-                distanceMap.put(refPoint.getKey(), EuclideanDistance(refPoint.getValue(), testPoint.getValue()));
+                distanceMap.put(refPoint.getKey(), CanberraDistance(refPoint.getValue(), testPoint.getValue()));
             }
             List<Map.Entry<String, Double>> distanceList = new ArrayList<>(distanceMap.entrySet());
             distanceList.sort(Map.Entry.comparingByValue()); // Sort the distance list
